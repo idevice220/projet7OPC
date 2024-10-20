@@ -1,11 +1,9 @@
-
 async function getData() {
     return { recipes }; // Retourner les données directemen
 }
 
 async function displayData(recipes) {
     const recipesSection = document.querySelector(".cards-gallery");
-
     recipes.forEach((recipe) => {
         const recipeModel = recipeTemplate(recipe);
         const recipeCardDOM = recipeModel.getRecipeCardDOM();
@@ -15,10 +13,10 @@ async function displayData(recipes) {
 
 
 async function init() {
-    // Récupère les datas des photographes
+    // Récupère les datas des recettes
     const { recipes } = await getData();
     displayData(recipes);
-    console.log(recipes);
+    // console.log(recipes);
 }
 
 init();
