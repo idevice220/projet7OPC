@@ -61,6 +61,7 @@ searchFilters.addEventListener('input', () => {
 
     // Si la recherche contient plus de 3 caractères, filtrer les recettes
     const filteredRecipes = recipes.filter((recipe) => {
+        showNumberOfRecipes(recipes); // Afficher le nombre de recettes
         return recipe.name.toLowerCase().includes(searchValue) ||
             recipe.ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(searchValue)) ||
             recipe.appliance.toLowerCase().includes(searchValue) ||
@@ -68,11 +69,13 @@ searchFilters.addEventListener('input', () => {
     });
 
     displayFilteredData(filteredRecipes);
+    // displayFilterdLabels(searchValue);
 });
 
 // Fonction pour afficher les recettes filtrées
 async function displayFilteredData(filteredRecipes) {
     const recipesSection = document.querySelector(".cards-gallery");
+    showNumberOfRecipes(filteredRecipes); // Afficher le nombre de recettes
     recipesSection.innerHTML = "";  // Vider la galerie avant d'afficher les nouvelles recettes
     filteredRecipes.forEach((recipe) => {
         const recipeModel = recipeTemplate(recipe);

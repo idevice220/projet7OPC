@@ -43,8 +43,15 @@ function recipeTemplate(data) {
             divIngredients.appendChild(ingredientSpan);
 
             const quantity = document.createElement("h5");
-            quantity.textContent = ingredient.quantity;
-            ingredientSpan.appendChild(quantity);
+            const unit = ingredient.unit;
+            if (!unit){
+                quantity.textContent = ingredient.quantity || "";
+                ingredientSpan.appendChild(quantity);
+
+            } else { 
+                quantity.textContent = ingredient.quantity + " " + unit;
+                ingredientSpan.appendChild(quantity);
+            }
         }
         );
 
