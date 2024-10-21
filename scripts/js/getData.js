@@ -5,7 +5,6 @@ async function getData() {
 // Fonction pour afficher les recettes
 async function showNumberOfRecipes(recipes) {
     let nbRecipes = document.getElementById("nbRecettes");
-    console.log(nbRecipes);
     nbRecipes.textContent = recipes.length + " recettes";
 }
 
@@ -24,8 +23,8 @@ async function displayData(recipes) {
 async function init() {
     // Récupère les datas des recettes
     const { recipes } = await getData();
+    // Aff
     displayData(recipes);
-    // console.log(recipes);
 }
 
 init();
