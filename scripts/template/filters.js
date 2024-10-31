@@ -32,7 +32,9 @@ const getFiltersIngredient = (recipes) => {
     // Récupérer tous les ingrédients depuis les recettes
     const ingredients = recipes.flatMap((recipe) => recipe.ingredients);
     // Filtrer les ingrédients uniques
-    const uniqueIngredients = [...new Set(ingredients.map((ingredient) => ingredient.ingredient))];
+    let uniqueIngredients = [...new Set(ingredients.map((ingredient) => ingredient.ingredient))];
+
+    uniqueIngredients = uniqueIngredients.sort();
 
     addEnteteIngredient(texteIngredient);
     addEnteteAppareil(texteAppareil);
@@ -43,22 +45,82 @@ const getFiltersIngredient = (recipes) => {
     });
 };
 
+const getFilteredIngredient = (ingredients) => {
+    // Filtrer les ustensiles uniques
+    let uniqueIngredients = [...new Set(ingredients)];
+
+    console.log(uniqueIngredients);
+
+
+    uniqueIngredients = uniqueIngredients.sort();
+    //fonction pour supprimer les ustensiles déjà présents dans la liste
+    filtresIngredients.innerHTML = "";
+    addEnteteIngredient(texteIngredient);
+
+    // Créer les options pour chaque ustensile unique
+    uniqueIngredients.forEach((ingredient) => {
+        filterTemplateIngredient(ingredient); // Appel de la fonction pour chaque ustensile
+    });
+};
+
+
 const getFiltersAppareil = (recipes) => {
     // Récupérer tous les appareils depuis les recettes
     const appliances = recipes.map((recipe) => recipe.appliance);
     // Filtrer les appareils uniques
-    const uniqueAppliance = [...new Set(appliances)];
+    let uniqueAppliance = [...new Set(appliances)];
+
+    uniqueAppliance = uniqueAppliance.sort();
     // Créer les options pour chaque appareil unique
     uniqueAppliance.forEach((appliance) => {
         filterTemplateAppareil(appliance); // Appel de la fonction pour chaque appareil
     });
 };
 
-const getFiltersUstensiles = (recipes) => {
-    // Utiliser flatMap pour aplatir tous les ustensiles dans un tableau unique
-    const ustensils = recipes.flatMap((recipe) => recipe.ustensils);
+// Fonction pour récupérer les ustensiles uniques selon les recettes déjà filtrés
+const getFilteredAppareil = (appareils) => {
     // Filtrer les ustensiles uniques
-    const uniqueUstensils = [...new Set(ustensils)];
+    let uniqueAppareils = [...new Set(appareils)];
+
+    console.log(uniqueAppareils);
+
+
+    uniqueAppareils = uniqueAppareils.sort();
+    //fonction pour supprimer les ustensiles déjà présents dans la liste
+    filtresAppareils.innerHTML = "";
+    addEnteteAppareil(texteAppareil);
+
+    // Créer les options pour chaque ustensile unique
+    uniqueAppareils.forEach((appareil) => {
+        filterTemplateAppareil(appareil); // Appel de la fonction pour chaque ustensile
+    });
+};
+
+const getFiltersUstensiles = (ustensiles) => {
+    const ustensils = ustensiles.flatMap((recipe) => recipe.ustensils);
+    // Filtrer les ustensiles uniques
+    let uniqueUstensils = [...new Set(ustensils)];
+
+
+    uniqueUstensils = uniqueUstensils.sort();
+    // Créer les options pour chaque ustensile unique
+    uniqueUstensils.forEach((ustensil) => {
+        filterTemplateUstensil(ustensil); // Appel de la fonction pour chaque ustensile
+    });
+};
+
+
+// Fonction pour récupérer les ustensiles uniques selon les recettes déjà filtrés
+const getFilteredUstensiles = (ustensiles) => {
+    // Filtrer les ustensiles uniques
+    let uniqueUstensils = [...new Set(ustensiles)];
+
+
+    uniqueUstensils = uniqueUstensils.sort();
+    //fonction pour supprimer les ustensiles déjà présents dans la liste
+    filtresUstensile.innerHTML = "";
+    addEnteteUstensile(texteUstensile);
+
     // Créer les options pour chaque ustensile unique
     uniqueUstensils.forEach((ustensil) => {
         filterTemplateUstensil(ustensil); // Appel de la fonction pour chaque ustensile
@@ -93,6 +155,7 @@ function filterTemplateAppareil(appliance) {
 
 // Fonction pour créer le DOM pour chaque ustensile et l'ajouter au <select>
 function filterTemplateUstensil(ustensil) {
+
     const filterDOM = document.createElement("option");
 
     texte = "Ustensiles";
