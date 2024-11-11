@@ -20,7 +20,9 @@ function createFilterCard(data, type) {
 
     // Bouton de suppression pour enlever le filtre
     const removeButton = document.createElement("button");
-    removeButton.textContent = "X";
+    const closeIcon = document.createElement("i");
+    closeIcon.classList.add("fas", "fa-times");
+    removeButton.appendChild(closeIcon);
     removeButton.classList.add("remove-button");
 
     // Événement pour supprimer le filtre
@@ -62,8 +64,9 @@ function displayFiltersCards() {
 // Fonction applyFilters pour filtrer les recettes en fonction des critères
 const applyFilters = () => {
     const searchValue = searchFilters.value.trim().toLowerCase();
-    console.log(searchValue);
     let filteredRecipes = recipes;
+
+    
 
     if (searchValue.length >= 3) {
         filteredRecipes = filteredRecipes.filter(recipe => {

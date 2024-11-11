@@ -49,7 +49,6 @@ const getFilteredIngredient = (ingredients) => {
     // Filtrer les ustensiles uniques
     let uniqueIngredients = [...new Set(ingredients)];
 
-    console.log(uniqueIngredients);
 
 
     uniqueIngredients = uniqueIngredients.sort();
@@ -82,7 +81,6 @@ const getFilteredAppareil = (appareils) => {
     // Filtrer les ustensiles uniques
     let uniqueAppareils = [...new Set(appareils)];
 
-    console.log(uniqueAppareils);
 
 
     uniqueAppareils = uniqueAppareils.sort();
