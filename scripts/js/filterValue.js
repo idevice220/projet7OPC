@@ -64,47 +64,88 @@ function displayFiltersCards() {
 // Fonction applyFilters pour filtrer les recettes en fonction des critères
 const applyFilters = () => {
     const searchValue = searchFilters.value.trim().toLowerCase();
-    let filteredRecipes = recipes;
+    let filteredRecipes = [];
 
-    
+    recipes.forEach(recipe => {
+        // Vérification de la condition de recherche (nom, ingrédients, appareils ou ustensiles)
+        let matchesSearch = false;
+        if (searchValue.length < 3) {
+            matchesSearch = true;
+        } else {
+            if (recipe.name.toLowerCase().includes(searchValue)) {
+                matchesSearch = true;
+            } else {
+                for (let ingredient of recipe.ingredients) {
+                    // Vérifie la propriété 'ingredient' à l'intérieur de chaque objet ingrédient
+                    if (ingredient.ingredient && ingredient.ingredient.toLowerCase().includes(searchValue)) {
+                        matchesSearch = true;
+                        break;
+                    }
+                }
+                if (!matchesSearch && recipe.appliance.toLowerCase().includes(searchValue)) {
+                    matchesSearch = true;
+                }
+                if (!matchesSearch) {
+                    for (let ustensil of recipe.ustensils) {
+                        if (ustensil.toLowerCase().includes(searchValue)) {
+                            matchesSearch = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
-    if (searchValue.length >= 3) {
-        filteredRecipes = filteredRecipes.filter(recipe => {
-            return (
-                recipe.name.toLowerCase().includes(searchValue) ||
-                recipe.ingredients.some(ing => ing.ingredient.toLowerCase().includes(searchValue)) ||
-                recipe.appliance.toLowerCase().includes(searchValue) ||
-                recipe.ustensils.some(ust => ust.toLowerCase().includes(searchValue))
-            );
-        });
-    }
+        // Vérification des filtres d'ingrédients actifs
+        let matchesIngredients = true;
+        if (activeIngredientFilters.length > 0) {
+            for (let filter of activeIngredientFilters) {
+                let ingredientFound = false;
+                for (let ingredient of recipe.ingredients) {
+                    // Vérifie la propriété 'ingredient' à l'intérieur de chaque objet ingrédient
+                    if (ingredient.ingredient && ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())) {
+                        ingredientFound = true;
+                        break;
+                    }
+                }
+                if (!ingredientFound) {
+                    matchesIngredients = false;
+                    break;
+                }
+            }
+        }
 
-    if (activeIngredientFilters.length > 0) {
-        filteredRecipes = filteredRecipes.filter(recipe =>
-            activeIngredientFilters.every(filter =>
-                recipe.ingredients.some(ing => ing.ingredient.toLowerCase().includes(filter))
-            )
-        );
-    }
+        // Vérification des filtres d'ustensiles actifs
+        let matchesUstensils = true;
+        if (activeUstensilesFilters.length > 0) {
+            for (let filter of activeUstensilesFilters) {
+                let ustensilFound = false;
+                for (let ustensil of recipe.ustensils) {
+                    if (ustensil.toLowerCase().includes(filter.toLowerCase())) {
+                        ustensilFound = true;
+                        break;
+                    }
+                }
+                if (!ustensilFound) {
+                    matchesUstensils = false;
+                    break;
+                }
+            }
+        }
 
-    if (activeAppareilFilter) {
-        filteredRecipes = filteredRecipes.filter(recipe =>
-            recipe.appliance.toLowerCase().includes(activeAppareilFilter)
-        );
-    }
+        // Ajouter la recette si elle satisfait toutes les conditions
+        if (matchesSearch && matchesIngredients && matchesUstensils) {
+            filteredRecipes.push(recipe);
+        }
+    });
 
-    if (activeUstensilesFilters.length > 0) {
-        filteredRecipes = filteredRecipes.filter(recipe =>
-            activeUstensilesFilters.every(filter =>
-                recipe.ustensils.some(ust => ust.toLowerCase().includes(filter))
-            )
-        );
-    }
-
+    // Mettre à jour l'affichage avec les recettes filtrées
     displayFilteredData(filteredRecipes);
     updateFilterOptions(filteredRecipes);
     displayFiltersCards(); // Afficher les cartes de filtres actifs
 };
+
+
 
 searchFilters.addEventListener('input', (event) => {
     if (event.target.value.length >= 3) {
